@@ -15,22 +15,31 @@
 <div id="app" class="hidden"><div class="wrap">
 <header class="hero"><div><div class="eyebrow">READING NOTE · 2026</div><h1>퓰리처 글쓰기 수업</h1><p>읽고, 표시하고, 내 언어로 다시 이해하는 14개의 기록</p></div>
 <div class="syncbox"><button id="syncOpen" class="syncStatus" type="button"><span id="syncDot">●</span> <span id="syncText">동기화 준비</span></button><button id="logout" class="tiny">로그아웃</button></div></header>
-<nav class="tabs"><button data-view="reading" class="active">📖 책 이해하기</button><button data-view="review">✍️ 서평 쓰기</button><button data-view="archive">🗂️ 서평 보관함</button><button data-view="settings">⚙️ 백업</button></nav>
+<nav class="tabs">
+<button data-view="reading" class="active">📖 책 이해하기</button>
+<button data-view="quotes">✒️ 필사하기</button>
+<button data-view="review">✍️ 서평 쓰기</button>
+<button data-view="archive">🗂️ 보관함</button>
+<button data-view="settings">⚙️ 백업</button>
+</nav>
 
 <section id="reading" class="view">
 <div class="chapterbar" id="chapterbar"></div>
 <div class="sectionhead"><div><small id="chapterNo">CHAPTER 01</small><h2 id="chapterTitle">1장의 기록</h2></div><span class="pill">읽는 중</span></div>
 <div class="grid">
 <div class="card"><b>📖 읽을 범위</b><small>이 장에서 읽을 페이지 범위를 정해두세요.</small><input data-ch="range" placeholder="예: p. 18 — p. 37 (장별로 자동 저장)"></div>
-<div class="card"><b>🔑 핵심 단어</b><small>쉼표로 구분해 적어보세요.</small><input data-ch="keywords" placeholder="장면, 구체성, 리듬"></div>
-<div class="card wide"><div class="row"><div><b>✒️ 필사 문장</b><small>페이지와 문장, 그리고 바로 아래에 내 생각.</small></div><button id="starQuote" class="star">☆</button></div>
-<input data-ch="quotePage" placeholder="p. 00"><textarea data-ch="quote" placeholder="필사할 문장"></textarea>
-<b class="sub">💭 이 문장에 대한 내 생각</b><textarea data-ch="quoteThought" placeholder="왜 이 문장이 남았나요?"></textarea>
-<input data-ch="quoteTags" placeholder="#문장 #내글에적용"></div>
+<div class="card"><b>🔑 핵심 단어</b><small>단어뿐 아니라 짧은 메모도 편하게 남겨보세요.</small><textarea data-ch="keywords" class="keywordBox" placeholder="장면, 구체성, 리듬…"></textarea></div>
 <div class="card wide warm"><b>📝 이 장의 내용 요약</b><small>저자가 무슨 이야기를 했는지 내 말로 설명해보세요.</small><textarea data-ch="summary" class="tall"></textarea></div>
 <div class="card wide blue"><b>한 문장으로 정리하면</b><small>이 장을 읽지 않은 사람에게 한 문장으로 설명한다면?</small><input data-ch="oneLine"></div>
 <div class="card wide"><b>📚 지금까지 읽은 내용</b><small>책 전체의 흐름을 누적해서 정리하는 공간.</small><textarea id="cumulative" class="tall"></textarea></div>
 </div></section>
+
+<section id="quotes" class="view hidden">
+<div class="chapterbar" id="quoteChapterbar"></div>
+<div class="sectionhead"><div><small id="quoteChapterNo">CHAPTER 01 · TRANSCRIPTION</small><h2 id="quoteChapterTitle">1장 필사</h2><p>마음에 남은 문장과 그 문장에 대한 생각을 장별로 모아둡니다.</p></div></div>
+<div id="quoteList" class="quoteList"></div>
+<div class="addQuoteWrap"><button id="addQuote" type="button">＋ 필사 문장 추가</button></div>
+</section>
 
 <section id="review" class="view hidden">
 <div class="sectionhead"><div><small>BOOK REVIEW WORKSHOP</small><h2>내 서평 만들기</h2></div></div>
@@ -47,8 +56,16 @@
 <input id="dailyTitle" placeholder="오늘 기록 제목"><textarea id="dailyDraft" class="draft" placeholder="오늘 쓴 서평 조각..."></textarea>
 <div class="row end"><button id="saveDaily">오늘 기록 보관하기</button></div></div></div></section>
 
-<section id="archive" class="view hidden"><div class="sectionhead"><div><small>REVIEW ARCHIVE</small><h2>서평 보관함</h2><p>매일 조금씩 쓴 흔적을 날짜별로 쌓아둡니다.</p></div></div>
-<div id="archiveList" class="archive"></div></section>
+<section id="archive" class="view hidden">
+<div class="sectionhead"><div><small>ARCHIVE</small><h2>보관함</h2><p>서평 조각과 필사 기록을 한곳에서 모아봅니다.</p></div></div>
+<div class="archiveTabs">
+<button type="button" data-archive-view="reviews" class="active">✍️ 서평</button>
+<button type="button" data-archive-view="quotes">✒️ 전체 필사</button>
+<button type="button" data-archive-view="stars">⭐ 별표 필사</button>
+</div>
+<div id="archiveList" class="archive"></div>
+<div id="quoteArchiveList" class="archive hidden"></div>
+</section>
 
 <section id="settings" class="view hidden"><div class="sectionhead"><div><small>DATA & BACKUP</small><h2>동기화와 백업</h2></div></div>
 <div class="card diagnostic" id="syncDiagnostic"><div class="row"><div><b>☁️ 동기화 진단</b><small>상단 동기화 상태를 눌러도 이 화면으로 이동합니다.</small></div><button id="syncTest" type="button">동기화 테스트</button></div>
@@ -59,7 +76,7 @@
 <div><span>마지막 Firebase 수신</span><b id="diagReceive">없음</b></div></div>
 <div id="syncError" class="syncError">현재 감지된 동기화 오류가 없습니다.</div></div>
 <div class="card"><b>☁️ Firebase 동기화</b><p>입력 내용은 기기에 즉시 보존되고 Firebase에도 자동 동기화됩니다. 같은 계정으로 PC·아이패드·모바일에서 열면 같은 기록을 불러옵니다.</p><div id="userInfo" class="msg"></div></div>
-<div class="card"><b>📦 전체 백업</b><p>14개 장 기록, 서평 재료, 일일 서평 보관함을 JSON 파일 하나로 내보냅니다.</p><button id="backup">전체 백업 다운로드</button></div>
+<div class="card"><b>📦 전체 백업</b><p>14개 장 기록, 필사 기록, 서평 재료와 보관함을 JSON 파일 하나로 내보냅니다.</p><button id="backup">전체 백업 다운로드</button></div>
 <div class="card"><b>♻️ 백업 복원</b><p>이 앱에서 만든 JSON 백업 파일을 선택하세요. 현재 데이터는 백업 내용으로 교체됩니다.</p><input id="restoreFile" type="file" accept=".json,application/json"><button id="restore">선택한 백업 복원</button></div></section>
 </div></div><script type="module" src="./app.js"></script>
 <script>

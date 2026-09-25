@@ -141,3 +141,29 @@ button:not(.star):not(.syncStatus){
   color:#ffffff !important;
   -webkit-text-fill-color:#ffffff !important;
 }
+
+/* v10 — five menus, roomy keywords, transcription workspace & archive */
+.tabs{grid-template-columns:repeat(5,1fr)!important}
+.keywordBox{min-height:145px!important;line-height:1.75}
+.quoteList{display:grid;gap:12px}
+.quoteCard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 6px 18px rgba(40,35,25,.035)}
+.quoteCard textarea{min-height:125px}
+.quoteCard .quoteThought{min-height:105px}
+.quoteCard .quoteHead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.quoteCard .quoteActions{display:flex;align-items:center;gap:6px}
+.quoteCard .deleteQuote{background:#efe5da!important;color:#60473a!important;-webkit-text-fill-color:#60473a!important;border:1px solid #d9c8b6!important;font-size:12px;padding:7px 9px}
+.quoteCard .quoteStar{border:0!important;background:transparent!important;color:#b58b31!important;-webkit-text-fill-color:#b58b31!important;font-size:25px;padding:2px 5px}
+.addQuoteWrap{display:flex;justify-content:center;padding:18px 0}
+#addQuote{min-width:190px}
+.archiveTabs{display:flex;gap:7px;overflow:auto;margin:4px 0 14px;padding-bottom:2px}
+.archiveTabs button{flex:0 0 auto;background:#e8d8c7!important;color:#2f241f!important;-webkit-text-fill-color:#2f241f!important;border:1px solid #d2bda8!important}
+.archiveTabs button.active{background:#d8bea6!important;box-shadow:inset 0 0 0 1px #b9987c}
+.quoteArchiveMeta{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 9px}
+.quoteArchiveMeta span{font-size:11px;background:#f0e7dc;border-radius:99px;padding:4px 8px;color:var(--muted)}
+.quoteArchiveText{white-space:pre-wrap;margin:7px 0}
+.quoteArchiveThought{white-space:pre-wrap;background:#f8f0df;border-radius:12px;padding:10px;margin-top:10px}
+@media(max-width:700px){
+  .tabs{grid-template-columns:repeat(5,1fr)!important;gap:4px}
+  .tabs button{font-size:10px!important;padding:9px 1px!important}
+  .keywordBox{min-height:135px!important}
+}
