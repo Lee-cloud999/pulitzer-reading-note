@@ -7,6 +7,28 @@ const fb=initializeApp(firebaseConfig), auth=getAuth(fb);
 const db=initializeFirestore(fb,{localCache:persistentLocalCache({tabManager:persistentMultipleTabManager()})});
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const clone=v=>JSON.parse(JSON.stringify(v));
+
+// v13 — keep textareas compact, then grow/shrink with their content.
+function autoResizeTextarea(el){
+  if(!el || el.tagName!=="TEXTAREA") return;
+  el.style.height="auto";
+  el.style.height=`${el.scrollHeight}px`;
+}
+function autoResizeAllTextareas(root=document){
+  root.querySelectorAll?.("textarea").forEach(autoResizeTextarea);
+}
+document.addEventListener("input",e=>{
+  if(e.target?.matches?.("textarea")) autoResizeTextarea(e.target);
+},true);
+const textareaObserver=new MutationObserver(mutations=>{
+  let needsResize=false;
+  for(const m of mutations){
+    if(m.type==="childList" && m.addedNodes.length){needsResize=true;break}
+  }
+  if(needsResize) requestAnimationFrame(()=>autoResizeAllTextareas());
+});
+textareaObserver.observe(document.documentElement,{childList:true,subtree:true});
+window.addEventListener("load",()=>requestAnimationFrame(()=>autoResizeAllTextareas()));
 const makeId=()=>`${Date.now()}-${Math.random().toString(36).slice(2,9)}`;
 const blankQuote=()=>({id:makeId(),page:"",text:"",thought:"",tags:"",star:false});
 const blankChapter=()=>({range:"",keywords:"",summary:"",oneLine:"",quotes:[]});

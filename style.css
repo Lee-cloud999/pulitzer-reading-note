@@ -249,3 +249,10 @@ textarea{
   .quoteCard .quoteThought{min-height:74px !important;}
   .tabs button{font-size:12px !important;padding:9px 2px !important;}
 }
+
+/* v13 — content-aware textarea autosize */
+textarea{
+  resize:none !important;
+  overflow-y:hidden !important;
+  box-sizing:border-box !important;
+}
