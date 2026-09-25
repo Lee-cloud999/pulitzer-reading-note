@@ -42,3 +42,47 @@ button:not(.star):not(.syncStatus){background:var(--deep)!important;color:#fffaf
 .syncStatus{color:#fff7eb!important}
 .hero h1,.hero .eyebrow,.hero p{color:#fff7eb}
 .hero .eyebrow{color:#e0c17d!important}
+
+/* v4 — stronger text contrast on brown surfaces */
+.hero,
+.reviewbanner{
+  color:#fffdf6 !important;
+}
+.hero h1,
+.hero p,
+.hero .syncbox,
+.hero .syncbox *,
+.reviewbanner strong,
+.reviewbanner small{
+  color:#fffdf6 !important;
+}
+.hero .eyebrow{
+  color:#f1d894 !important;
+}
+
+.tabs button.active,
+.chapterbar button.active,
+button:not(.star):not(.syncStatus){
+  background:var(--deep) !important;
+  color:#fffdf6 !important;
+  -webkit-text-fill-color:#fffdf6 !important;
+}
+.tabs button.active *,
+.chapterbar button.active *{
+  color:#fffdf6 !important;
+  -webkit-text-fill-color:#fffdf6 !important;
+}
+
+.tabs button:not(.active),
+.chapterbar button:not(.active){
+  background:#fffaf2 !important;
+  color:#4b342a !important;
+  -webkit-text-fill-color:#4b342a !important;
+  border-color:#d7c6b3 !important;
+}
+
+.syncStatus,
+.syncStatus *{
+  color:#fffdf6 !important;
+  -webkit-text-fill-color:#fffdf6 !important;
+}
