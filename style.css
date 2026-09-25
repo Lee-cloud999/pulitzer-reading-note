@@ -122,3 +122,22 @@ button:not(.star):not(.syncStatus){
   color:#ffffff !important;
   -webkit-text-fill-color:#ffffff !important;
 }
+
+/* v7 — softer cream typography on the Pulitzer banners */
+.hero h1,
+.hero p,
+.hero .eyebrow,
+.hero .syncbox,
+.reviewbanner strong,
+.reviewbanner small{
+  color:#f4ead8 !important;
+  -webkit-text-fill-color:#f4ead8 !important;
+}
+/* Explicit exception: sync status remains black + white for readability */
+.hero .syncStatus,
+.hero .syncStatus *,
+.syncStatus,
+.syncStatus *{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}

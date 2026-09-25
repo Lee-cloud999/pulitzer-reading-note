@@ -1,4 +1,4 @@
-const CACHE = "pulitzer-reading-v6";
+const CACHE = "pulitzer-reading-v7";
 const APP_SHELL = [
   "./",
   "./index.html",
