@@ -44,6 +44,7 @@ function openSyncDiagnostic(){
   $$(".tabs button").forEach(x=>x.classList.remove("active"));
   const sb=$('.tabs button[data-view="settings"]'); if(sb)sb.classList.add("active");
   $$(".view").forEach(v=>v.classList.add("hidden")); $("#settings").classList.remove("hidden");
+  localStorage.setItem("pulitzerLastView","settings");
   setTimeout(()=>$("#syncDiagnostic")?.scrollIntoView({behavior:"smooth",block:"start"}),50);
 }
 async function runSyncTest(){
@@ -87,3 +88,18 @@ document.addEventListener("click",e=>{
 onAuthStateChanged(auth,user=>{if(unsub){unsub();unsub=null} if(!user){uid=null;$("#auth").classList.remove("hidden");$("#app").classList.add("hidden");return} uid=user.uid;$("#auth").classList.add("hidden");$("#app").classList.remove("hidden");$("#userInfo").textContent=`로그인: ${user.email}`;setDiag("#diagAuth",`정상 · ${user.email}`);setDiag("#diagNet",navigator.onLine?"연결됨":"오프라인");syncStatus("Firebase 연결 확인 중…");const local=localStorage.getItem("pulitzerReadingState");if(local)try{state=JSON.parse(local)}catch{} renderAll(); loadingRemote=true;unsub=onSnapshot(doc(db,"pulitzerReadingUsers",uid),snap=>{loadingRemote=true;if(snap.exists()){const remote=snap.data();if((remote.updatedAt||0)>=(state.updatedAt||0)){state=remote;localStorage.setItem("pulitzerReadingState",JSON.stringify(state));renderAll()}}else saveCloud();loadingRemote=false;setDiag("#diagReceive",nowText());syncStatus(navigator.onLine?"Firebase 동기화 완료":"오프라인 · 기기에 저장됨",navigator.onLine?"ok":"offline");},(e)=>{loadingRemote=false;syncError(`${e.code||"firebase-error"}\n${e.message||e}`);syncStatus("동기화 오류 · 눌러서 확인","error")})});
 window.addEventListener("online",()=>{setDiag("#diagNet","연결됨");syncStatus("연결됨 · Firebase 동기화 중…");saveCloud()});window.addEventListener("offline",()=>{setDiag("#diagNet","오프라인");syncStatus("오프라인 · 기기에 저장됨","offline")});
 if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));
+function rememberableShowView(viewId,remember=true){
+  const target=document.getElementById(viewId); if(!target)return;
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("active",x.dataset.view===viewId));
+  document.querySelectorAll(".view").forEach(v=>v.classList.add("hidden"));
+  target.classList.remove("hidden");
+  if(remember)localStorage.setItem("pulitzerLastView",viewId);
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".tabs button[data-view]");
+  if(b){e.preventDefault();rememberableShowView(b.dataset.view,true)}
+});
+const _rememberedView=localStorage.getItem("pulitzerLastView");
+if(_rememberedView && document.getElementById(_rememberedView)){
+  setTimeout(()=>rememberableShowView(_rememberedView,false),0);
+}

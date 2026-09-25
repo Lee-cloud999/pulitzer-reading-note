@@ -86,3 +86,39 @@ button:not(.star):not(.syncStatus){
   color:#fffdf6 !important;
   -webkit-text-fill-color:#fffdf6 !important;
 }
+
+/* v5 — top navigation readability */
+.tabs button,
+.tabs button.active,
+.tabs button:not(.active){
+  background:#e8d8c7 !important;
+  color:#2f241f !important;
+  -webkit-text-fill-color:#2f241f !important;
+  border-color:#d2bda8 !important;
+  font-weight:700 !important;
+}
+.tabs button * ,
+.tabs button.active *{
+  color:#2f241f !important;
+  -webkit-text-fill-color:#2f241f !important;
+}
+.tabs button.active{
+  background:#d8bea6 !important;
+  box-shadow:inset 0 0 0 1px #b9987c;
+}
+
+/* Sync status pill: black + white for maximum contrast */
+.syncStatus,
+.syncStatus.error,
+.syncStatus.offline{
+  background:#1f1f1f !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  border-color:#1f1f1f !important;
+}
+.syncStatus *,
+.syncStatus.error *,
+.syncStatus.offline *{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
