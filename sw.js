@@ -1,19 +1,20 @@
-const CACHE = "pulitzer-reading-v8";
+const CACHE = "pulitzer-reading-v9";
+const BASE = "/pulitzer-reading-note/";
 const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./app.js",
-  "./firebase-config.js",
-  "./manifest.webmanifest",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  BASE,
+  BASE + "index.html",
+  BASE + "style.css",
+  BASE + "app.js",
+  BASE + "firebase-config.js",
+  BASE + "manifest.webmanifest",
+  BASE + "icons/icon-192.png",
+  BASE + "icons/icon-512.png"
 ];
 
 self.addEventListener("install", event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(APP_SHELL).catch(() => {}))
+    caches.open(CACHE).then(cache => cache.addAll(APP_SHELL))
   );
 });
 
@@ -25,9 +26,6 @@ self.addEventListener("activate", event => {
   );
 });
 
-// Network-first for same-origin GET requests.
-// Online: always ask GitHub Pages first and refresh cache.
-// Offline/network failure: fall back to the latest cached copy.
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET") return;
@@ -45,11 +43,10 @@ self.addEventListener("fetch", event => {
         return response;
       })
       .catch(async () => {
-        const cached = await caches.match(request);
+        const cached = await caches.match(request, { ignoreSearch: true });
         if (cached) return cached;
-
         if (request.mode === "navigate") {
-          return (await caches.match("./index.html")) || Response.error();
+          return (await caches.match(BASE + "index.html")) || Response.error();
         }
         return Response.error();
       })

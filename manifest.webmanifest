@@ -1,26 +1,26 @@
 {
-  "name": "퓰리처 글쓰기 수업 · Reading Note",
-  "short_name": "Reading Note",
-  "start_url": "./index.html",
+  "name": "퓰리처 글쓰기 수업",
+  "short_name": "퓰리처 글쓰기",
+  "start_url": "/pulitzer-reading-note/",
   "display": "standalone",
   "background_color": "#f6f1e7",
   "theme_color": "#6b4f3a",
   "icons": [
     {
-      "src": "./icons/icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     }
   ],
-  "id": "./",
-  "scope": "./",
+  "id": "/pulitzer-reading-note/",
+  "scope": "/pulitzer-reading-note/",
   "display_override": [
     "standalone"
   ]
