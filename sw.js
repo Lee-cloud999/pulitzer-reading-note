@@ -1,10 +1,13 @@
-const CACHE = "pulitzer-reading-v7";
+const CACHE = "pulitzer-reading-v8";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./style.css",
   "./app.js",
-  "./manifest.webmanifest"
+  "./firebase-config.js",
+  "./manifest.webmanifest",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png"
 ];
 
 self.addEventListener("install", event => {
