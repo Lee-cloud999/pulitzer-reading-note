@@ -39,9 +39,51 @@ $("#backup").onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{ty
 $("#restore").onclick=async()=>{const f=$("#restoreFile").files[0];if(!f)return alert("백업 파일을 선택해 주세요.");try{const d=JSON.parse(await f.text());if(!d.chapters||!d.review||!d.archive)throw 0;if(!confirm("현재 데이터를 선택한 백업으로 교체할까요?"))return;state=d;changed();renderAll();await saveCloud();alert("복원했어요.")}catch(e){alert("이 앱의 올바른 백업 파일인지 확인해 주세요.")}};
 
 
-$("#syncOpen").onclick=()=>{ $$(".tabs button").forEach(x=>x.classList.remove("active")); const sb=$('.tabs button[data-view="settings"]');if(sb)sb.classList.add("active");$$(".view").forEach(v=>v.classList.add("hidden"));$("#settings").classList.remove("hidden");$("#syncDiagnostic").scrollIntoView({behavior:"smooth",block:"start"})};
-$("#syncTest").onclick=async()=>{if(!uid)return syncError("로그인되어 있지 않아 테스트할 수 없습니다.");if(!navigator.onLine)return syncError("인터넷 연결이 없어 Firebase 테스트를 시작할 수 없습니다.");const ref=doc(db,"pulitzerSyncDiagnostics",uid);setDiag("#diagWrite","테스트 중…");setDiag("#diagRead","대기 중…");syncError("");try{await setDoc(ref,{uid,clientTime:Date.now(),testedAt:serverTimestamp()});setDiag("#diagWrite","성공");const snap=await getDoc(ref);if(!snap.exists())throw new Error("테스트 문서를 다시 읽지 못했습니다.");setDiag("#diagRead","성공");await deleteDoc(ref);syncStatus("동기화 테스트 성공");syncError("")}catch(e){if($("#diagWrite").textContent==="테스트 중…")setDiag("#diagWrite","실패");else setDiag("#diagRead","실패");syncError(`${e.code||"firebase-error"}\\n${e.message||e}`);syncStatus("동기화 테스트 실패 · 눌러서 확인","error")}};
 
-onAuthStateChanged(auth,user=>{if(unsub){unsub();unsub=null} if(!user){uid=null;$("#auth").classList.remove("hidden");$("#app").classList.add("hidden");return} uid=user.uid;$("#auth").classList.add("hidden");$("#app").classList.remove("hidden");$("#userInfo").textContent=`로그인: ${user.email}`;setDiag("#diagAuth",`정상 · ${user.email}`);setDiag("#diagNet",navigator.onLine?"연결됨":"오프라인");const local=localStorage.getItem("pulitzerReadingState");if(local)try{state=JSON.parse(local)}catch{} renderAll(); loadingRemote=true;unsub=onSnapshot(doc(db,"pulitzerReadingUsers",uid),snap=>{loadingRemote=true;if(snap.exists()){const remote=snap.data();if((remote.updatedAt||0)>=(state.updatedAt||0)){state=remote;localStorage.setItem("pulitzerReadingState",JSON.stringify(state));renderAll()}}else saveCloud();loadingRemote=false;setDiag("#diagReceive",nowText());syncStatus(navigator.onLine?"Firebase 동기화 완료":"오프라인 · 기기에 저장됨",navigator.onLine?"ok":"offline");},(e)=>{loadingRemote=false;syncError(`${e.code||"firebase-error"}\n${e.message||e}`);syncStatus("동기화 오류 · 눌러서 확인","error")})});
+function openSyncDiagnostic(){
+  $$(".tabs button").forEach(x=>x.classList.remove("active"));
+  const sb=$('.tabs button[data-view="settings"]'); if(sb)sb.classList.add("active");
+  $$(".view").forEach(v=>v.classList.add("hidden")); $("#settings").classList.remove("hidden");
+  setTimeout(()=>$("#syncDiagnostic")?.scrollIntoView({behavior:"smooth",block:"start"}),50);
+}
+async function runSyncTest(){
+  const btn=$("#syncTest");
+  if(btn){btn.disabled=true;btn.textContent="테스트 중…"}
+  setDiag("#diagAuth",auth.currentUser?`정상 · ${auth.currentUser.email}`:"로그인 안 됨");
+  setDiag("#diagNet",navigator.onLine?"연결됨":"오프라인");
+  setDiag("#diagWrite","준비 중…"); setDiag("#diagRead","대기 중");
+  syncError(""); syncStatus("Firebase 진단 중…");
+  try{
+    if(!auth.currentUser) throw new Error("Firebase Authentication 로그인 상태가 아닙니다.");
+    if(!navigator.onLine) throw new Error("인터넷 연결이 없습니다.");
+    const ref=doc(db,"pulitzerSyncDiagnostics",auth.currentUser.uid);
+    setDiag("#diagWrite","쓰기 요청 중…");
+    await setDoc(ref,{uid:auth.currentUser.uid,clientTime:Date.now(),testedAt:serverTimestamp()});
+    setDiag("#diagWrite","성공 · "+nowText());
+    setDiag("#diagRead","읽기 요청 중…");
+    const snap=await getDoc(ref);
+    if(!snap.exists()) throw new Error("쓰기에는 성공했지만 테스트 문서를 다시 읽지 못했습니다.");
+    setDiag("#diagRead","성공 · "+nowText());
+    try{await deleteDoc(ref)}catch(_){}
+    syncStatus("Firebase 읽기·쓰기 정상");
+    syncError("");
+  }catch(e){
+    if($("#diagWrite")?.textContent.includes("요청")) setDiag("#diagWrite","실패");
+    if($("#diagRead")?.textContent.includes("요청")) setDiag("#diagRead","실패");
+    const code=e?.code||"firebase-error", message=e?.message||String(e);
+    syncError(`오류 코드: ${code}\n${message}`);
+    syncStatus("동기화 오류 · 눌러서 확인","error");
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent="동기화 테스트"}
+  }
+}
+document.addEventListener("click",e=>{
+  const syncButton=e.target.closest("#syncOpen");
+  const testButton=e.target.closest("#syncTest");
+  if(syncButton){e.preventDefault();openSyncDiagnostic()}
+  if(testButton){e.preventDefault();runSyncTest()}
+});
+
+onAuthStateChanged(auth,user=>{if(unsub){unsub();unsub=null} if(!user){uid=null;$("#auth").classList.remove("hidden");$("#app").classList.add("hidden");return} uid=user.uid;$("#auth").classList.add("hidden");$("#app").classList.remove("hidden");$("#userInfo").textContent=`로그인: ${user.email}`;setDiag("#diagAuth",`정상 · ${user.email}`);setDiag("#diagNet",navigator.onLine?"연결됨":"오프라인");syncStatus("Firebase 연결 확인 중…");const local=localStorage.getItem("pulitzerReadingState");if(local)try{state=JSON.parse(local)}catch{} renderAll(); loadingRemote=true;unsub=onSnapshot(doc(db,"pulitzerReadingUsers",uid),snap=>{loadingRemote=true;if(snap.exists()){const remote=snap.data();if((remote.updatedAt||0)>=(state.updatedAt||0)){state=remote;localStorage.setItem("pulitzerReadingState",JSON.stringify(state));renderAll()}}else saveCloud();loadingRemote=false;setDiag("#diagReceive",nowText());syncStatus(navigator.onLine?"Firebase 동기화 완료":"오프라인 · 기기에 저장됨",navigator.onLine?"ok":"offline");},(e)=>{loadingRemote=false;syncError(`${e.code||"firebase-error"}\n${e.message||e}`);syncStatus("동기화 오류 · 눌러서 확인","error")})});
 window.addEventListener("online",()=>{setDiag("#diagNet","연결됨");syncStatus("연결됨 · Firebase 동기화 중…");saveCloud()});window.addEventListener("offline",()=>{setDiag("#diagNet","오프라인");syncStatus("오프라인 · 기기에 저장됨","offline")});
 if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));

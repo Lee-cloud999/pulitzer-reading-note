@@ -19,3 +19,26 @@ button{background:var(--deep);color:#fff8ec}
 .syncError{margin-top:10px;padding:10px 12px;border-radius:12px;background:#eef0e7;font-size:12px;white-space:pre-wrap}
 .syncError.bad{background:#f5dfd8;color:#6e3027}
 @media(max-width:700px){.diagGrid{grid-template-columns:1fr}}
+
+/* v3 — warm brown theme, explicit overrides */
+:root{
+  --ink:#49352c;
+  --deep:#684b3c;
+  --deep-hover:#765746;
+  --paper:#f7f1e7;
+  --card:#fffaf3;
+  --line:#dfd2c2;
+  --gold:#b99555;
+  --sky:#e7eef0;
+  --muted:#7d6e63;
+}
+body{background:var(--paper)!important;color:var(--ink)!important}
+.hero,.reviewbanner{background:var(--deep)!important;color:#fffaf1!important}
+.tabs button.active,
+.chapterbar button.active,
+button:not(.star):not(.syncStatus){background:var(--deep)!important;color:#fffaf1!important;border-color:var(--deep)!important}
+.tabs button:not(.active),.chapterbar button:not(.active){color:#5b4034!important}
+.chapterbar button:not(.active){background:#fffaf2!important;border-color:#d8c8b6!important;font-weight:700!important}
+.syncStatus{color:#fff7eb!important}
+.hero h1,.hero .eyebrow,.hero p{color:#fff7eb}
+.hero .eyebrow{color:#e0c17d!important}
