@@ -207,3 +207,45 @@ button:not(.star):not(.syncStatus){
   box-shadow:none !important;
   background:transparent !important;
 }
+
+
+/* v12 — compact mobile-first fields + fixed textarea size */
+textarea{
+  resize:none !important;
+}
+.card{
+  padding:15px !important;
+}
+textarea{
+  min-height:82px !important;
+}
+.tall{
+  min-height:125px !important;
+}
+.draft{
+  min-height:180px !important;
+}
+.keywordBox{
+  min-height:105px !important;
+}
+.quoteCard{
+  padding:15px !important;
+}
+.quoteCard textarea{
+  min-height:95px !important;
+}
+.quoteCard .quoteThought{
+  min-height:82px !important;
+}
+@media(max-width:700px){
+  .grid{gap:9px !important;}
+  .card{padding:13px !important;border-radius:15px !important;}
+  textarea{min-height:74px !important;}
+  .tall{min-height:105px !important;}
+  .draft{min-height:150px !important;}
+  .keywordBox{min-height:92px !important;}
+  .quoteCard{padding:13px !important;border-radius:15px !important;}
+  .quoteCard textarea{min-height:84px !important;}
+  .quoteCard .quoteThought{min-height:74px !important;}
+  .tabs button{font-size:12px !important;padding:9px 2px !important;}
+}
