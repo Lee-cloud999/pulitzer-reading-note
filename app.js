@@ -70,7 +70,7 @@ function renderQuotes(){
     return;
   }
   list.innerHTML=quotes.map((q,i)=>`<article class="quoteCard" data-quote-id="${esc(q.id)}">
-    <div class="quoteHead"><div><b>✒️ 필사 문장 ${i+1}</b><small>${quoteChapter+1}장에 저장됩니다.</small></div>
+    <div class="quoteHead"><div><b>✒️ 필사 문장</b></div>
       <div class="quoteActions"><button class="quoteStar" data-quote-star="${esc(q.id)}" type="button" aria-label="별표">${q.star?"★":"☆"}</button><button class="deleteQuote" data-quote-delete="${esc(q.id)}" type="button">삭제</button></div></div>
     <input data-q-field="page" value="${esc(q.page)}" placeholder="p. 00">
     <textarea data-q-field="text" placeholder="필사할 문장">${esc(q.text)}</textarea>
