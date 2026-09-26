@@ -1,10 +1,12 @@
-const CACHE = "pulitzer-reading-v13";
+const CACHE = "pulitzer-reading-v14-icon-path-fix";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./style.css",
   "./app.js",
-  "./manifest.webmanifest"
+  "./manifest.webmanifest",
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
 self.addEventListener("install", event => {

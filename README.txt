@@ -1,14 +1,17 @@
-퓰리처 글쓰기 수업 Reading Note PWA
+pulitzer-reading-note 아이콘 경로 수정본 v14
 
-GitHub Pages 배포:
-1. 이 폴더 안의 파일/폴더를 GitHub 저장소 루트에 그대로 업로드합니다.
-2. Settings > Pages > Deploy from a branch > main / root 로 배포합니다.
-3. Firebase Authentication > Settings > Authorized domains에 GitHub Pages 도메인을 추가합니다.
-4. Firestore 규칙에서 pulitzerReadingUsers 문서는 로그인한 본인 uid만 읽고 쓰도록 허용해야 합니다.
+GitHub 저장소 루트에 아래 3개 파일을 덮어쓰세요.
+- index.html
+- manifest.webmanifest
+- sw.js
 
-권장 Firestore rules 예시:
-match /pulitzerReadingUsers/{userId} {
-  allow read, write: if request.auth != null && request.auth.uid == userId;
-}
+수정 내용
+- 존재하지 않는 ./icons/icon-192.png 경로를 ./icon-192.png 로 수정
+- 존재하지 않는 ./icons/icon-512.png 경로를 ./icon-512.png 로 수정
+- apple-touch-icon 경로 수정
+- manifest 및 아이콘 URL 캐시 버전 v14 적용
+- service worker 앱 셸에 icon-192.png / icon-512.png 추가
+- 캐시 이름을 pulitzer-reading-v14-icon-path-fix 로 갱신
 
-백업: 앱의 '백업' 메뉴에서 JSON 다운로드 / 복원.
+기존 app.js, style.css, Firebase 설정, 기록 저장 로직은 수정하지 않았습니다.
+기존 icon-192.png / icon-512.png 파일은 저장소 루트에 이미 있으므로 ZIP에 중복 포함하지 않았습니다.
