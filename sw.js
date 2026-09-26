@@ -1,4 +1,4 @@
-const CACHE = "pulitzer-reading-v14-icon-path-fix";
+const CACHE = "pulitzer-reading-v15-pwa-icon-20260926";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -6,7 +6,12 @@ const APP_SHELL = [
   "./app.js",
   "./manifest.webmanifest",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./icon-maskable-192.png",
+  "./icon-maskable-512.png",
+  "./apple-touch-icon.png",
+  "./favicon-32.png",
+  "./favicon-16.png"
 ];
 
 self.addEventListener("install", event => {
@@ -24,9 +29,6 @@ self.addEventListener("activate", event => {
   );
 });
 
-// Network-first for same-origin GET requests.
-// Online: always ask GitHub Pages first and refresh cache.
-// Offline/network failure: fall back to the latest cached copy.
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET") return;

@@ -1,27 +1,37 @@
 {
   "name": "퓰리처 글쓰기 수업",
   "short_name": "퓰리처 글쓰기",
+  "description": "퓰리처 글쓰기 수업 독서·필사·서평 기록 노트",
+  "id": "/pulitzer-reading-note/",
   "start_url": "/pulitzer-reading-note/",
+  "scope": "/pulitzer-reading-note/",
   "display": "standalone",
-  "background_color": "#f6f1e7",
-  "theme_color": "#6b4f3a",
+  "background_color": "#0f2f4a",
+  "theme_color": "#0f2f4a",
   "icons": [
     {
-      "src": "./icon-192.png?v=14",
+      "src": "./icon-192.png?v=15",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-512.png?v=14",
+      "src": "./icon-512.png?v=15",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable-192.png?v=15",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon-maskable-512.png?v=15",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ],
-  "id": "/pulitzer-reading-note/",
-  "scope": "/pulitzer-reading-note/",
-  "display_override": [
-    "standalone"
   ]
 }
